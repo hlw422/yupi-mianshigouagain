@@ -28,6 +28,8 @@ import {
   } from 'antd';
   import React, { useState } from 'react';
   import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
   
   const Item: React.FC<{ children: React.ReactNode }> = (props) => {
     const { token } = theme.useToken();
@@ -82,14 +84,8 @@ import {
             <SearchOutlined
             />
           }
-          placeholder="搜索方案"
+          placeholder="搜索题目"
           variant="borderless"
-        />
-        <PlusCircleFilled
-          style={{
-            color: token.colorPrimary,
-            fontSize: 24,
-          }}
         />
       </div>
     );
@@ -100,17 +96,8 @@ import {
   }
   
   export default function BasicLayout ({children}:Props) {
-    const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
-      fixSiderbar: true,
-      layout: 'mix',
-      splitMenus: true,
-    });
-  
-    const [pathname, setPathname] = useState('/list/sub-page/sub-sub-page1');
+    const pathname=usePathname();
     const [num, setNum] = useState(40);
-    if (typeof document === 'undefined') {
-      return <div />;
-    }
     return (
       <div
         id="basicLayout"
@@ -157,14 +144,16 @@ import {
               }}
               actionsRender={(props) => {
                 if (props.isMobile) return [];
-                if (typeof window === 'undefined') return [];
                 return [
-                  props.layout !== 'side' && document.body.clientWidth > 1400 ? (
-                    <SearchInput />
-                  ) : undefined,
-                  <InfoCircleFilled key="InfoCircleFilled" />,
-                  <QuestionCircleFilled key="QuestionCircleFilled" />,
-                  <GithubFilled key="GithubFilled" />,
+                    <SearchInput key="SearchInput" />,
+                    <a
+                    key="github"
+                    href="https://github.com/ant-design/ant-design-pro"
+                    target="_blank"
+                    >
+                    <GithubFilled key="GithubFilled" />
+                    </a>,
+             
                 ];
               }}
               headerTitleRender={(logo, title, _) => {
@@ -200,14 +189,34 @@ import {
                 );
               }}
               onMenuHeaderClick={(e) => console.log(e)}
+              menuDataRender={(menuData) => {
+
+                return [
+                  {
+                    path: '/welcome',
+                    name: '欢迎',
+                    icon: <InfoCircleFilled />,
+                  },
+                  {
+                    path: '/problem',
+                    name: '题库',
+                    icon: <QuestionCircleFilled />,
+                  },
+                  {
+                    path: '/mine',
+                    name: '我的',
+                    icon: <PlusCircleFilled />,
+                  },
+                ];
+              }
+              }
               menuItemRender={(item, dom) => (
-                <div
-                  onClick={() => {
-                    setPathname(item.path || '/welcome');
-                  }}
+                <Link 
+                href={item.path||'/'}
+                target={item.target}
                 >
-                  {dom}
-                </div>
+            {dom}
+                </Link>
               )}
             >
               {children}
