@@ -1,15 +1,13 @@
 import React from 'react';
 import { Button, Flex,Image } from 'antd';
+import { listQuestionBankVoByPageUsingPost } from '@/api/questionBankController';
 
-const App: React.FC = () => (
-<>
-    <div>aaaa</div>
-    <div>aaaa</div>
-    <div>aaaa</div>
-    <div>aaaa</div>
-    <div>aaaa</div>
-    <div>aaaa</div>
-    </>
-);
+export default function Page() {
+  listQuestionBankVoByPageUsingPost({}).then((res) => {
+    console.log("page",res);
+});
 
-export default App;
+  return (
+    <div>aaaaa</div>
+  )
+}

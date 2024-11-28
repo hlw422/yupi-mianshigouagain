@@ -33,10 +33,14 @@ import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import './index.css';
 import { menus } from "../../../config/menu";
+import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
+
+
 
 
 const SearchInput = () => {
   const { token } = theme.useToken();
+
   return (
     <div
       key="SearchOutlined"
@@ -69,6 +73,10 @@ interface Props {
 }
 
 export default function BasicLayout({ children }: Props) {
+
+  listQuestionBankVoByPageUsingPost({}).then((res) => {
+    console.log("layout",res);
+});
   const pathname = usePathname();
   return (
     <div
