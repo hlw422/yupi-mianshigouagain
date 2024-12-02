@@ -23,6 +23,7 @@ import {
   Divider,
   Dropdown,
   Input,
+  message,
   Popover,
   theme,
 } from "antd";
@@ -32,14 +33,19 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import './index.css';
-import { menus } from "../../../config/menu";
+import { menus } from "../../../config/menus";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
+import getAccessibleMenus from "@/access/menuAccess";
+import { log } from "console";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
 
 
 
 
 const SearchInput = () => {
   const { token } = theme.useToken();
+  
 
   return (
     <div
@@ -74,9 +80,15 @@ interface Props {
 
 export default function BasicLayout({ children }: Props) {
 
+  /*
   listQuestionBankVoByPageUsingPost({}).then((res) => {
     console.log("layout",res);
 });
+*/
+
+const loginUser = useSelector((state: RootState) => state.loginUser);
+console.log("loginUser", loginUser);
+
   const pathname = usePathname();
   return (
     <div
@@ -149,7 +161,7 @@ export default function BasicLayout({ children }: Props) {
         }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenus(loginUser, menus);
         }}
         menuItemRender={(item, dom) => (
           <Link href={item.path || "/"} target={item.target}>
