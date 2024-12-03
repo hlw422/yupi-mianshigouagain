@@ -2,22 +2,31 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import BasicLayout from "@/layouts/BasicLayout";
 import { useCallback, useEffect } from "react";
-import { Provider } from "react-redux";
-import store from "@/stores";
+import { Provider, useDispatch } from "react-redux";
+import store, { AppDispatch } from "@/stores";
 import AccessLayout from "@/access/AccessLayout";
+import { getLoginUserUsingGet } from "@/api/userController";
+import { setLoginUser } from "@/stores/loginUser";
 
 const InitLayout: React.FC<
   Readonly<{
     children: React.ReactNode;
   }>
 > = ({ children }) => {
-  const doInit = useCallback(() => {
-    console.log("doInit");
+  const dispatch = useDispatch<AppDispatch>();
+  // 初始化全局用户状态
+  const doInitLoginUser = useCallback(async () => {
+    const res = await getLoginUserUsingGet();
+    if (res.data) {
+      // 更新全局用户状态
+      dispatch(setLoginUser(res.data));
+    }
   }, []);
 
   useEffect(() => {
-    doInit();
-  });
+    doInitLoginUser();
+  }, []);
+
   return children;
 };
 

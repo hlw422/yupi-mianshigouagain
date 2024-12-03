@@ -27,7 +27,7 @@ import {
   Popover,
   theme,
 } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -39,6 +39,8 @@ import getAccessibleMenus from "@/access/menuAccess";
 import { log } from "console";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
+import MdEditor from "@/components/MdEditor";
+import MdViewer from "@/components/MdViewer";
 
 
 
@@ -87,6 +89,7 @@ export default function BasicLayout({ children }: Props) {
 */
 
 const loginUser = useSelector((state: RootState) => state.loginUser);
+const [text, setText] = useState<string>('');
 console.log("loginUser", loginUser);
 
   const pathname = usePathname();
@@ -113,9 +116,9 @@ console.log("loginUser", loginUser);
           },
         }}
         avatarProps={{
-          src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+          src: loginUser.userAvatar,
           size: "small",
-          title: "七妮妮",
+          title: loginUser.userName,
           render: (props, dom) => {
             return (
               <Dropdown
