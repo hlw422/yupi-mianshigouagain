@@ -90,7 +90,7 @@ export default function BasicLayout({ children }: Props) {
 
 const loginUser = useSelector((state: RootState) => state.loginUser);
 const [text, setText] = useState<string>('');
-console.log("loginUser", loginUser);
+console.log("loginUserBasicLayout", loginUser);
 
   const pathname = usePathname();
   return (

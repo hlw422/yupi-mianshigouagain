@@ -20,6 +20,7 @@ const InitLayout: React.FC<
     if (res.data) {
       // 更新全局用户状态
       dispatch(setLoginUser(res.data));
+      console.log("init login user", res.data);
     }
   }, []);
 
