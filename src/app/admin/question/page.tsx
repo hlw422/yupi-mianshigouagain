@@ -1,16 +1,21 @@
-'use client';
-import CreateModal from './components/CreateModal';
-import UpdateModal from './components/UpdateModal';
-import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, message, Space, Typography } from 'antd';
-import React, { useRef, useState } from 'react';
-import { deleteQuestionUsingPost, listQuestionByPageUsingPost, listQuestionVoByPageUsingPost } from '@/api/questionController';
-import TagList from '@/components/TagList';
+"use client";
+
+import CreateModal from "./components/CreateModal";
+import UpdateModal from "./components/UpdateModal";
+import {
+  deleteQuestionUsingPost,
+  listQuestionByPageUsingPost,
+} from "@/api/questionController";
+import { PlusOutlined } from "@ant-design/icons";
+import type { ActionType, ProColumns } from "@ant-design/pro-components";
+import { PageContainer, ProTable } from "@ant-design/pro-components";
+import { Button, message, Space, Typography } from "antd";
+import React, { useRef, useState } from "react";
+import TagList from "@/components/TagList";
+import MdEditor from "@/components/MdEditor";
 
 /**
- * 用户管理页面
+ * 题目管理页面
  *
  * @constructor
  */
@@ -20,7 +25,7 @@ const QuestionAdminPage: React.FC = () => {
   // 是否显示更新窗口
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  // 当前用户点击的数据
+  // 当前点击的数据
   const [currentRow, setCurrentRow] = useState<API.Question>();
 
   /**
@@ -29,19 +34,19 @@ const QuestionAdminPage: React.FC = () => {
    * @param row
    */
   const handleDelete = async (row: API.Question) => {
-    const hide = message.loading('正在删除');
+    const hide = message.loading("正在删除");
     if (!row) return true;
     try {
       await deleteQuestionUsingPost({
         id: row.id as any,
       });
       hide();
-      message.success('删除成功');
+      message.success("删除成功");
       actionRef?.current?.reload();
       return true;
     } catch (error: any) {
       hide();
-      message.error('删除失败，' + error.message);
+      message.error("删除失败，" + error.message);
       return false;
     }
   };
@@ -67,6 +72,19 @@ const QuestionAdminPage: React.FC = () => {
       valueType: "text",
       hideInSearch: true,
       width: 240,
+      renderFormItem: (
+        _,
+        { type, defaultRender, formItemProps, fieldProps, ...rest },
+        form,
+      ) => {
+        return (
+          // value 和 onchange 会通过 form 自动注入。
+          <MdEditor
+            // 组件的配置
+            {...fieldProps}
+          />
+        );
+      },
     },
     {
       title: "答案",
@@ -74,6 +92,19 @@ const QuestionAdminPage: React.FC = () => {
       valueType: "text",
       hideInSearch: true,
       width: 640,
+      renderFormItem: (
+        _,
+        { type, defaultRender, formItemProps, fieldProps, ...rest },
+        form,
+      ) => {
+        return (
+          // value 和 onchange 会通过 form 自动注入。
+          <MdEditor
+            // 组件的配置
+            {...fieldProps}
+          />
+        );
+      },
     },
     {
       title: "标签",
@@ -87,14 +118,13 @@ const QuestionAdminPage: React.FC = () => {
         return <TagList tagList={tagList} />;
       },
     },
-    
     {
       title: "创建用户",
       dataIndex: "userId",
       valueType: "text",
       hideInForm: true,
     },
-  
+
     {
       title: "创建时间",
       sorter: true,
@@ -130,7 +160,7 @@ const QuestionAdminPage: React.FC = () => {
               setCurrentRow(record);
               setUpdateModalVisible(true);
             }}
-            >
+          >
             修改
           </Typography.Link>
           <Typography.Link type="danger" onClick={() => handleDelete(record)}>
@@ -140,17 +170,12 @@ const QuestionAdminPage: React.FC = () => {
       ),
     },
   ];
-  
-  
+
   return (
     <PageContainer>
       <ProTable<API.Question>
-        headerTitle={'查询表格'}
+        headerTitle={"题目管理"}
         actionRef={actionRef}
-        rowKey="key"
-        search={{
-          labelWidth: 120,
-        }}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -164,7 +189,8 @@ const QuestionAdminPage: React.FC = () => {
         ]}
         request={async (params, sort, filter) => {
           const sortField = Object.keys(sort)?.[0];
-          const sortOrder = sort?.[sortField] ?? undefined;
+          const sortOrder = sort?.[sortField];
+
           const { data, code } = await listQuestionByPageUsingPost({
             ...params,
             sortField,
@@ -174,8 +200,8 @@ const QuestionAdminPage: React.FC = () => {
 
           return {
             success: code === 0,
-            data: data?.records || [],
-            total: Number(data?.total) || 0,
+            data: data.records || [],
+            total: Number(data.total) || 0,
           };
         }}
         columns={columns}
