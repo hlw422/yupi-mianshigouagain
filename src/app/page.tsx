@@ -6,6 +6,7 @@ import { Divider } from "antd";
 import Link from "next/link";
 import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import QuestionBankList from "@/components/QuestionBankList";
+import QuestionList from "@/components/QuestionList"; 
 
 export default async function Page() {
   let questionBankList: any[] = [];
@@ -42,7 +43,8 @@ export default async function Page() {
   }
 
   return (
-    <div className="home_page">
+    //style={{ maxWidth: '1200px', position: 'relative', margin: '0 auto' }}>
+<div id="homePage" className="max-width-content">
       <Flex justify="space-between" align="center">
         <Title level={3}>最新题库</Title>
         <Link href={"/blanks"}>查看更多</Link>
@@ -53,8 +55,7 @@ export default async function Page() {
         <Title level={3}>最新题目</Title>
         <Link href={"/blanks"}>查看更多</Link>
       </Flex>
-      <div className="questionList">题目列表
-      </div>
+      <QuestionList questionList={questionList} />
     </div>
   );
 }
