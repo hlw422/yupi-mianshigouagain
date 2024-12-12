@@ -4,7 +4,8 @@ import "./index.css";
 import Link from "next/link";
 
 interface Props {
-  questionList: API.QuestionVO[];
+ QuestionList: API.QuestionVO[];
+ 
 }
 
 /**
@@ -13,7 +14,7 @@ interface Props {
  * @constructor
  */
 const QuestionList = (props: Props) => {
-  const { questionList = [] } = props;
+  const { QuestionList } = props;
 
   const tagList = (tags: string[] = []) => {
     return tags.map((tag) => {
@@ -24,7 +25,7 @@ const QuestionList = (props: Props) => {
   return (
     <Card className="question-list">
       <List
-        dataSource={questionList}
+        dataSource={QuestionList}
         renderItem={(item: API.QuestionVO) => (
           <List.Item extra={tagList(item.tagList)}>
             <List.Item.Meta
