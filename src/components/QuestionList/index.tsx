@@ -29,7 +29,7 @@ const QuestionList = (props: Props) => {
         renderItem={(item: API.QuestionVO) => (
           <List.Item extra={tagList(item.tagList)}>
             <List.Item.Meta
-              title={<Link href={`/question/${item.id}`}>{item.title}</Link>}
+              title={<Link href={`/questions/${item.id}`}>{item.title}</Link>}
             />
           </List.Item>
         )}

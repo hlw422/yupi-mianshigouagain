@@ -12,6 +12,7 @@ interface Props {
   //用于展示服务端返回的数据
   defaultQuestionList?: API.QuestionVO[];
   defaultTotal?: number;
+  defaultSearchParams?:API.QuestionQueryRequest;
 }
 
 /**
@@ -21,7 +22,7 @@ interface Props {
 export default function QuestionTable(props: Props) {
   const actionRef = useRef<ActionType>();
 
-  const { defaultQuestionList, defaultTotal } = props;
+  const { defaultQuestionList, defaultTotal,defaultSearchParams={} } = props;
   //题目列表
   const [questionList, setQuestionList] = useState<API.QuestionVO[]>(defaultQuestionList || []);
   //题目总数
@@ -59,6 +60,9 @@ export default function QuestionTable(props: Props) {
         size="large"
         search={{
           labelWidth: "auto",
+        }}
+        form={{
+          initialValues: defaultSearchParams
         }}
         //外部赋值数据源
         dataSource={questionList}

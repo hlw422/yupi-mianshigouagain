@@ -44,36 +44,7 @@ import MdViewer from "@/components/MdViewer";
 import { userLogoutUsingPost } from "@/api/userController";
 import { setLoginUser } from "@/stores/loginUser";
 import { DEFAULT_USER } from "@/app/constants/user";
-
-const SearchInput = () => {
-  const { token } = theme.useToken();
-
-  return (
-    <div
-      key="SearchOutlined"
-      aria-hidden
-      style={{
-        display: "flex",
-        alignItems: "center",
-        marginInlineEnd: 24,
-      }}
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <Input
-        style={{
-          borderRadius: 4,
-          marginInlineEnd: 12,
-        }}
-        prefix={<SearchOutlined />}
-        placeholder="搜索题目"
-        variant="borderless"
-      />
-    </div>
-  );
-};
+import SearchInput from "./components/SearchInput";
 
 interface Props {
   children: React.ReactNode;
@@ -168,17 +139,29 @@ export default function BasicLayout({ children }: Props) {
         }}
         actionsRender={(props) => {
           if (props.isMobile) return [];
+          // 添加条件判断，当路径不为/questions时展示SearchInput
+          if (pathname!== '/questions') {
+              return [
+                  <SearchInput key="SearchInput" />,
+                  <a
+                      key="github"
+                      href="https://github.com/ant-design/ant-design-pro"
+                      target="_blank"
+                  >
+                      <GithubFilled key="GithubFilled" />
+                  </a>,
+              ];
+          }
           return [
-            <SearchInput key="SearchInput" />,
-            <a
-              key="github"
-              href="https://github.com/ant-design/ant-design-pro"
-              target="_blank"
-            >
-              <GithubFilled key="GithubFilled" />
-            </a>,
+              <a
+                  key="github"
+                  href="https://github.com/ant-design/ant-design-pro"
+                  target="_blank"
+              >
+                  <GithubFilled key="GithubFilled" />
+              </a>,
           ];
-        }}
+      }}
         headerTitleRender={(logo, title, _) => {
           return (
             <a>
