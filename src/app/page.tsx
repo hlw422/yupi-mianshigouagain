@@ -55,7 +55,7 @@ export default async function Page() {
         <Title level={3}>最新题目</Title>
         <Link href={"/blanks"}>查看更多</Link>
       </Flex>
-      <QuestionList questionList={questionList} />
+      <QuestionList QuestionList={questionList} />
     </div>
   );
 }

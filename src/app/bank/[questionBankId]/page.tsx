@@ -25,7 +25,7 @@ export default async function BankPage({params}) {
         message.error("获取题库失败,"+e.message);
     }
     if(!bank){
-        return <div>获取题库列表失败，请刷新重试</div>
+        return <div>获取题库列表失败，请刷新重试</div>;
     }
     return(
         <div id="bankPage" className="max-width-content">
@@ -47,7 +47,8 @@ export default async function BankPage({params}) {
 
                 </Meta>
             </Card>
-            <QuestionList QuestionList={bank.questionPage.records??[]}></QuestionList>
+            <QuestionList QuestionList={bank.questionPage.records??[]} cardTitle={`题目列表（共${
+                bank.questionPage?.total||0}题)` } questionBankId={questionBankId}></QuestionList>
         </div>
     )
 }

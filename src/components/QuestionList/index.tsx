@@ -4,8 +4,9 @@ import "./index.css";
 import Link from "next/link";
 
 interface Props {
- QuestionList: API.QuestionVO[];
- 
+  questionBankId?: number;
+  QuestionList: API.QuestionVO[];
+  cardTitle: string;
 }
 
 /**
@@ -14,9 +15,9 @@ interface Props {
  * @constructor
  */
 const QuestionList = (props: Props) => {
-  const { QuestionList } = props;
+  const { QuestionList, cardTitle, questionBankId } = props;
 
-  console.log("QuestionList",QuestionList);
+  console.log("QuestionList", QuestionList);
 
   const tagList = (tags: string[] = []) => {
     return tags.map((tag) => {
@@ -25,13 +26,23 @@ const QuestionList = (props: Props) => {
   };
 
   return (
-    <Card className="question-list">
+    <Card className="question-list" title={cardTitle}>
       <List
         dataSource={QuestionList}
         renderItem={(item: API.QuestionVO) => (
           <List.Item extra={tagList(item.tagList)}>
             <List.Item.Meta
-              title={<Link href={`/questions/${item.id}`}>{item.title}</Link>}
+              title={
+                <Link
+                  href={
+                    questionBankId
+                      ? `/bank/${questionBankId}/question/${item.id}`
+                      : `/question/${item.id}`
+                  }
+                >
+                  {item.title}
+                </Link>
+              }
             />
           </List.Item>
         )}
