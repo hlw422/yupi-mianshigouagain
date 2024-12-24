@@ -16,6 +16,8 @@ interface Props {
 const QuestionList = (props: Props) => {
   const { QuestionList } = props;
 
+  console.log("QuestionList",QuestionList);
+
   const tagList = (tags: string[] = []) => {
     return tags.map((tag) => {
       return <Tag key={tag}>{tag}</Tag>;

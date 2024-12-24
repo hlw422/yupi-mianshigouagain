@@ -1,10 +1,11 @@
 import { getQuestionBankVoByIdUsingGet } from "@/api/questionBankController";
 import QuestionBankList from "@/components/QuestionBankList";
 import QuestionList from "@/components/QuestionList";
-import { Avatar, Card, message, Typography } from "antd";
+import { Avatar, Card, Typography } from "antd";
 import Meta from "antd/es/card/Meta";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
+import { message } from "antd/lib";
 import { AxiosResponse } from "axios";
 
 export default async function BankPage({params}) {
@@ -45,8 +46,8 @@ export default async function BankPage({params}) {
                 >
 
                 </Meta>
-          <QuestionList questionList={bank.questionPage.records??[]}></QuestionList>
             </Card>
+            <QuestionList QuestionList={bank.questionPage.records??[]}></QuestionList>
         </div>
     )
 }
