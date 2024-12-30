@@ -5,6 +5,8 @@ import Title from "antd/es/typography/Title";
 import Sider from "antd/lib/layout/Sider";
 import message from "antd/lib/message";
 import QuestionCard from "@/components/QuestionCard";
+import { Content } from "antd/es/layout/layout";
+import Link from "next/link";
 interface Props {
   questionBankId: number;
   questionId: number;
@@ -45,7 +47,7 @@ export default async function BankQuestionPage({ params}) {
 
   const questionMenuItemList=(bank.questionPage?.records || []).map(item=>({
     key:item.id,
-    label:item.title,
+    label:<Link href={`/bank/${bank.id}/question/${item.id}` }> {item.title}</Link> ,
   }));
   return (
     <div id="bankQuestionPage">
@@ -54,7 +56,7 @@ export default async function BankQuestionPage({ params}) {
           <Title level={4} style={{padding: "0 20px"}}>
             {bank.title}
           </Title>
-          <Menu items={questionMenuItemList}/>
+          <Menu items={questionMenuItemList} selectedKeys={[question.id]}/>
         </Sider>
         <Content>
             <QuestionCard question={question} />
