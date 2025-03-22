@@ -16,6 +16,7 @@ interface Props {
  */
 const handleAdd = async (fields: API.QuestionAddRequest) => {
   const hide = message.loading('正在添加');
+  console.log("fields",fields);
   try {
     await addQuestionUsingPost(fields);
     hide();

@@ -11,6 +11,7 @@ interface Props {
   onCancel: () => void;
 }
 
+
 /**
  * 更新节点
  *
@@ -38,9 +39,18 @@ const handleUpdate = async (fields: API.QuestionUpdateRequest) => {
 const UpdateModal: React.FC<Props> = (props) => {
   const { oldData, visible, columns, onSubmit, onCancel } = props;
 
+  console.log("oldData", oldData);  
   if (!oldData) {
     return <></>;
   }
+  
+  // 表单初始化值格式转换
+  const initValues = { ...oldData };
+  if (oldData.tags) {
+    initValues.tags = JSON.parse(oldData.tags) || [];
+  }
+
+
 
   return (
     <Modal
@@ -56,9 +66,10 @@ const UpdateModal: React.FC<Props> = (props) => {
         type="form"
         columns={columns}
         form={{
-          initialValues: oldData,
+          initialValues: initValues,
         }}
         onSubmit={async (values: API.QuestionAddRequest) => {
+          console.log("values", values);
           const success = await handleUpdate({
             ...values,
             id: oldData.id as any,
